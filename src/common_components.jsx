@@ -1,5 +1,3 @@
-import React from 'react';
-import Dashboard from './Dashboard'; // Import your Dashboard component
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, Utensils, MessageCircle, Send } from 'lucide-react';
 
