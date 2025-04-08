@@ -1,14 +1,17 @@
+// App.js
 import React from 'react';
-import './App.css';  // Keep the existing CSS import
-import Dashboard from './Dashboard';  // Import the Dashboard component
+import Dashboard from './Dashboard';
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Dashboard />  {/* Add the Dashboard component here */}
+      <header className="App-header">
+        <h1>My Dashboard</h1>
+      </header>
+      <Dashboard />
     </div>
   );
 }
 
 export default App;
-
