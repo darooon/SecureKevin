@@ -83,33 +83,29 @@ const IconFilter = () => (
 
 // Helper components
 const Separator = ({ className }) => (
-  <hr className={`border-t border-gray-200 my-4 ${className || ''}`} />
+  <hr className={`separator ${className || ''}`} />
 );
 
 const Card = ({ children, className }) => (
-  <div className={`bg-white rounded-lg shadow-md overflow-hidden ${className || ''}`}>
+  <div className={`card ${className || ''}`}>
     {children}
   </div>
 );
 
 const CardContent = ({ children, className }) => (
-  <div className={`p-6 ${className || ''}`}>
+  <div className={`card-content ${className || ''}`}>
     {children}
   </div>
 );
 
 const Button = ({ children, variant = "primary", className = "", onClick, ...props }) => {
-  const baseStyle = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
-  
-  const styles = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700 h-10 py-2 px-4",
-    outline: "border border-gray-300 bg-white hover:bg-gray-50 h-10 py-2 px-4 text-gray-700",
-    link: "text-blue-600 hover:underline p-0 h-auto"
-  };
+  const variantClass = variant === "primary" ? "btn-primary" : 
+                      variant === "outline" ? "btn-outline" : 
+                      "btn-link";
   
   return (
     <button 
-      className={`${baseStyle} ${styles[variant]} ${className}`} 
+      className={`btn ${variantClass} ${className}`} 
       onClick={onClick}
       {...props}
     >
@@ -120,14 +116,14 @@ const Button = ({ children, variant = "primary", className = "", onClick, ...pro
 
 const Input = ({ className, ...props }) => (
   <input 
-    className={`flex h-10 w-full rounded-md border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-50 ${className || ''}`} 
+    className={className || ''} 
     {...props} 
   />
 );
 
 const Textarea = ({ className, ...props }) => (
   <textarea 
-    className={`flex min-h-[80px] w-full rounded-md border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:cursor-not-allowed disabled:opacity-50 ${className || ''}`} 
+    className={`min-h-80 ${className || ''}`} 
     {...props}
   />
 );
@@ -135,19 +131,19 @@ const Textarea = ({ className, ...props }) => (
 const ProgressBar = ({ value, max, threshold = 0, showLabel = true }) => {
   const percentage = Math.min(Math.round((value / max) * 100), 100);
   
-  let barColor = "bg-green-500";
+  let barColorClass = "progress-green";
   if (threshold && value <= threshold) {
-    barColor = "bg-red-500";
+    barColorClass = "progress-red";
   } else if (percentage < 50) {
-    barColor = "bg-yellow-500";
+    barColorClass = "progress-yellow";
   }
   
   return (
     <div className="flex items-center">
-      {showLabel && <span className="text-sm text-gray-900 mr-3">{value}</span>}
-      <div className="w-full bg-gray-200 rounded-full h-2.5">
+      {showLabel && <span className="text-sm mr-3">{value}</span>}
+      <div className="progress-container">
         <div
-          className={`${barColor} h-2.5 rounded-full`}
+          className={`progress-bar ${barColorClass}`}
           style={{ width: `${percentage}%` }}
         ></div>
       </div>
@@ -156,35 +152,28 @@ const ProgressBar = ({ value, max, threshold = 0, showLabel = true }) => {
 };
 
 const StatusBadge = ({ status, type = 'default' }) => {
-  let bgColor = '';
-  let textColor = '';
+  let badgeClass = '';
   
   if (type === 'inventory') {
     if (status === 'In Stock') {
-      bgColor = 'bg-green-100';
-      textColor = 'text-green-800';
+      badgeClass = 'badge-green';
     } else if (status === 'Low Stock') {
-      bgColor = 'bg-yellow-100';
-      textColor = 'text-yellow-800';
+      badgeClass = 'badge-yellow';
     } else {
-      bgColor = 'bg-red-100';
-      textColor = 'text-red-800';
+      badgeClass = 'badge-red';
     }
   } else {
     if (status === 'Stable') {
-      bgColor = 'bg-green-100';
-      textColor = 'text-green-800';
+      badgeClass = 'badge-green';
     } else if (status === 'Monitoring') {
-      bgColor = 'bg-yellow-100';
-      textColor = 'text-yellow-800';
+      badgeClass = 'badge-yellow';
     } else {
-      bgColor = 'bg-blue-100';
-      textColor = 'text-blue-800';
+      badgeClass = 'badge-blue';
     }
   }
   
   return (
-    <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${bgColor} ${textColor}`}>
+    <span className={`status-badge ${badgeClass}`}>
       {status}
     </span>
   );
@@ -341,28 +330,28 @@ const Nurse = () => {
 
   // Render profile section
   const renderProfile = () => (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div className="lg:col-span-2">
-        <Card className="hover:shadow-lg transition-shadow duration-300">
+    <div className="grid grid-cols-1 lg-grid-cols-3 gap-6">
+      <div className="lg-col-span-2">
+        <Card className="card-shadow-hover">
           <CardContent>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center">
-              <div className="flex-shrink-0 mb-4 sm:mb-0 sm:mr-6">
+            <div className="flex flex-col flex-row items-start items-center">
+              <div className="flex-shrink-0 mb-4 mr-6">
                 <img 
                   src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" 
                   alt="Nurse profile" 
-                  className="rounded-full w-24 h-24 object-cover border-4 border-blue-100" 
+                  className="rounded-full w-24 h-24 object-cover border-4 border-primary-100" 
                 />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-800 mb-1">Sarah Johnson, RN</h2>
                 <div className="flex flex-wrap items-center">
-                  <span className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium mr-2 mb-2">
+                  <span className="status-badge badge-blue mr-2 mb-2">
                     ID: N12345
                   </span>
-                  <span className="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full font-medium mr-2 mb-2">
+                  <span className="status-badge badge-purple mr-2 mb-2">
                     Geriatric Care
                   </span>
-                  <span className="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full font-medium mb-2">
+                  <span className="status-badge badge-gray mb-2">
                     8 Years Experience
                   </span>
                 </div>
@@ -375,7 +364,7 @@ const Nurse = () => {
             <Separator className="my-6" />
             
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Contact Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid md-grid-cols-2 gap-4">
               <div className="flex items-center">
                 <IconMail className="text-gray-400 mr-3" />
                 <span className="text-gray-600">sarah.johnson@securekevin.com</span>
@@ -398,13 +387,13 @@ const Nurse = () => {
       </div>
       
       <div>
-        <Card className="hover:shadow-lg transition-shadow duration-300">
+        <Card className="card-shadow-hover">
           <CardContent>
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Certifications</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
                 <div className="flex-shrink-0 mt-1">
-                  <IconCheck className="text-blue-600" />
+                  <IconCheck className="text-primary" />
                 </div>
                 <div className="ml-3">
                   <p className="text-gray-800 font-medium">Registered Nurse License</p>
@@ -413,7 +402,7 @@ const Nurse = () => {
               </li>
               <li className="flex items-start">
                 <div className="flex-shrink-0 mt-1">
-                  <IconCheck className="text-blue-600" />
+                  <IconCheck className="text-primary" />
                 </div>
                 <div className="ml-3">
                   <p className="text-gray-800 font-medium">Advanced Cardiac Life Support</p>
@@ -422,7 +411,7 @@ const Nurse = () => {
               </li>
               <li className="flex items-start">
                 <div className="flex-shrink-0 mt-1">
-                  <IconCheck className="text-blue-600" />
+                  <IconCheck className="text-primary" />
                 </div>
                 <div className="ml-3">
                   <p className="text-gray-800 font-medium">Geriatric Nursing Certification</p>
@@ -434,13 +423,13 @@ const Nurse = () => {
             <Separator className="my-6" />
             
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Upcoming Training</h3>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start">
+            <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 flex items-start">
               <div className="flex-shrink-0 mr-3">
-                <IconCalendar className="text-blue-600" />
+                <IconCalendar className="text-primary" />
               </div>
               <div>
-                <h4 className="font-medium text-blue-800">Dementia Care Workshop</h4>
-                <p className="text-sm text-blue-700 mt-1">June 15-16, 2025 - Conference Room A</p>
+                <h4 className="font-medium text-primary-800">Dementia Care Workshop</h4>
+                <p className="text-sm text-primary-700 mt-1">June 15-16, 2025 - Conference Room A</p>
               </div>
             </div>
           </CardContent>
