@@ -3,6 +3,7 @@ import React from 'react';
 import { Grid, Container, Button, Box } from '@mui/material';
 import TimetableDoctor from '../components/TimetableDoctor';
 import EventsListDoctor from '../components/EventsListDoctor';
+import CustomCalendar from '../components/CustomCalendar';
 import WarningIcon from '@mui/icons-material/Warning';
 import Sidebar from '../components/Sidebar';
 
@@ -23,6 +24,9 @@ function DoctorsDashboard() {
           <Grid container spacing={3}>
             <Grid item xs={12} lg={8}>
               <TimetableDoctor userType="doctor" />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <CustomCalendar />
             </Grid>
             <Grid item xs={12} md={6} lg={8}>
               <EventsListDoctor userType="doctor" />
