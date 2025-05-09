@@ -10,6 +10,16 @@ import Login from './pages/Login';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 import './styles/main.css';
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import Nurse from "./pages/Nurse";
+import NotFound from "./pages/NotFound";
+
+// ... keep existing code
 
 // Protected Route component
 const ProtectedRoute = ({ children, requiredRole }) => {
@@ -101,5 +111,7 @@ function App() {
     </AuthProvider>
   );
 }
+
+
 
 export default App;
