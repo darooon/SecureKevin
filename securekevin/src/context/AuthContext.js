@@ -36,31 +36,35 @@ const rolePermissions = {
   },
   carer: {
     canViewPatientRecords: true,
-    canEditPatientRecords: false,
-    canPrescribeMedication: true,
+    canEditPatientRecords: true,
+    canPrescribeMedication: false,
     canScheduleAppointments: true,
     canViewAllPatients: false,
     canManageStaff: false,
-  },
+  }
 };
 
 // Mock user database
 const mockUsers = {
   doctor: [
-    { username: 'dr.smith', password: 'doctor123', name: 'Dr. John Smith' },
-    { username: 'dr.jones', password: 'doctor456', name: 'Dr. Sarah Jones' }
+    { username: 'P.Patel', password: 'doctor123', name: 'Dr. Peter Patel' },
+    { username: 'J.Doe', password: 'doctor456', name: 'Dr. John Doe' }
   ],
   nurse: [
-    { username: 'nurse.wilson', password: 'nurse123', name: 'Nurse Emily Wilson' },
-    { username: 'nurse.brown', password: 'nurse456', name: 'Nurse Michael Brown' }
+    { username: 'C.Taylor', password: 'nurse123', name: 'Nurse Clara Taylor' },
+    { username: 'M.Jane', password: 'nurse456', name: 'Nurse Mary Jane' }
   ],
   patient: [
-    { username: 'patient.doe', password: 'patient123', name: 'John Doe' },
-    { username: 'patient.smith', password: 'patient456', name: 'Jane Smith' }
+    { username: 'M.Thompson', password: 'patient123', name: 'Margaret Thompson' },
+    { username: 'S.Paul', password: 'patient456', name: 'Stephen Paul' }
   ],
   relative: [
-    { username: 'relative.johnson', password: 'relative123', name: 'Mary Johnson' },
-    { username: 'relative.williams', password: 'relative456', name: 'Robert Williams' }
+    { username: 'E.Thompson', password: 'relative123', name: 'Emily Thompson' },
+    { username: 'M.Paul', password: 'relative456', name: 'Michaela Paul' }
+  ],
+  carer: [
+    { username: 'S.Jones', password: 'carer123', name: 'Shaniqua Jones' },
+    { username: 'A.Patel', password: 'carer456', name: 'Aadhya Patel' }
   ]
 };
 
