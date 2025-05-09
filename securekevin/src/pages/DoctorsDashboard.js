@@ -1,15 +1,21 @@
 // src/pages/DoctorsDashboard.js
-import React from 'react';
-import { Grid, Container, Button, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Grid, Container, Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import TimetableDoctor from '../components/TimetableDoctor';
 import EventsListDoctor from '../components/EventsListDoctor';
 import CustomCalendar from '../components/CustomCalendar';
-import WarningIcon from '@mui/icons-material/Warning';
 import Sidebar from '../components/Sidebar';
 
 function DoctorsDashboard() {
-  const handleEmergency = () => {
-    alert('Emergency services have been notified. Please stay calm and follow instructions.');
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -33,45 +39,59 @@ function DoctorsDashboard() {
             </Grid>
           </Grid>
         </Container>
-        <Box 
-          sx={{ 
+
+        {/* Report Problems Button */}
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<ReportProblemIcon />}
+          onClick={handleOpenDialog}
+          sx={{
             position: 'fixed',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            p: 2,
-            backgroundColor: 'rgba(255, 255, 255, 0.95)',
-            boxShadow: '0px -2px 10px rgba(0, 0, 0, 0.1)',
-            zIndex: 1000,
-            display: 'flex',
-            justifyContent: 'center',
-            backdropFilter: 'blur(5px)'
+            bottom: 20,
+            right: 20,
+            borderRadius: '50px',
+            padding: '10px 20px',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+            '&:hover': {
+              transform: 'scale(1.05)',
+              boxShadow: '0 6px 12px rgba(0,0,0,0.3)',
+            },
+            transition: 'all 0.3s ease'
           }}
         >
-          <Button
-            variant="contained"
-            color="error"
-            size="large"
-            startIcon={<WarningIcon />}
-            onClick={handleEmergency}
-            sx={{
-              py: 2,
-              px: 4,
-              fontSize: '1.2rem',
-              fontWeight: 'bold',
-              borderRadius: '50px',
-              boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-              '&:hover': {
-                backgroundColor: '#d32f2f',
-                transform: 'scale(1.05)',
-                boxShadow: '0 6px 12px rgba(0,0,0,0.3)',
-              },
-              transition: 'all 0.3s ease'
-            }}
-          >
-            EMERGENCY
-          </Button>
-        </Box>
+          Report Problems
+        </Button>
+
+        {/* Contact Information Dialog */}
+        <Dialog
+          open={openDialog}
+          onClose={handleCloseDialog}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle>
+            <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+              Contact Support
+            </Typography>
+          </DialogTitle>
+          <DialogContent>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              If you're experiencing any issues, please contact our support team:
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 1 }}>
+              Email: support@securekevin.com
+            </Typography>
+            <Typography variant="body1">
+              Phone: +61 (04) 42 617 322
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </div>
   );

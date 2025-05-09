@@ -2,16 +2,12 @@ import React from 'react';
 import { Drawer, List, ListItem, ListItemText, ListSubheader, Divider, Box } from '@mui/material';
 
 const menuItems = [
-  'Appointments',
   'Medical records',
   'Patient Profiles',
   'Medication',
   'Prescriptions',
   'Referrals',
   'Critical patients',
-  'Menu item',
-  'Menu item',
-  'Menu item',
 ];
 
 const Sidebar = () => (
