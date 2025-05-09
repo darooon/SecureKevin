@@ -34,6 +34,14 @@ const rolePermissions = {
     canViewAllPatients: false,
     canManageStaff: false,
   },
+  carer: {
+    canViewPatientRecords: true,
+    canEditPatientRecords: false,
+    canPrescribeMedication: true,
+    canScheduleAppointments: true,
+    canViewAllPatients: false,
+    canManageStaff: false,
+  },
 };
 
 // Mock user database
@@ -104,6 +112,47 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const changePassword = async (username, userType, currentPassword, newPassword) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Validate user type
+      if (!mockUsers[userType]) {
+        setError('Invalid user type');
+        return false;
+      }
+
+      // Find user in the mock database
+      const userIndex = mockUsers[userType].findIndex(
+        u => u.username === username && u.password === currentPassword
+      );
+
+      if (userIndex === -1) {
+        setError('Invalid username or current password');
+        return false;
+      }
+
+      // Update password in mock database
+      mockUsers[userType][userIndex].password = newPassword;
+
+      // If the user is currently logged in and changing their own password,
+      // update the user object
+      if (user && user.username === username && user.role === userType) {
+        const updatedUser = { ...user };
+        setUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+      }
+
+      return true;
+    } catch (err) {
+      setError('An error occurred while changing password');
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
@@ -121,6 +170,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     hasPermission,
+    changePassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

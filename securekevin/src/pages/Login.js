@@ -15,11 +15,13 @@ import {
   CircularProgress
 } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
+import ChangePassword from '../components/ChangePassword';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('');
+  const [showChangePassword, setShowChangePassword] = useState(false);
   const navigate = useNavigate();
   const { login, loading, error } = useAuth();
 
@@ -112,7 +114,8 @@ function Login() {
                 <MenuItem value="doctor">Doctor</MenuItem>
                 <MenuItem value="nurse">Nurse</MenuItem>
                 <MenuItem value="patient">Patient</MenuItem>
-                <MenuItem value="relative">Family Member/Carer</MenuItem>
+                <MenuItem value="relative">Family Member</MenuItem>
+                <MenuItem value="carer">Family Member</MenuItem>
               </Select>
             </FormControl>
             <Button
@@ -124,9 +127,22 @@ function Login() {
             >
               {loading ? <CircularProgress size={24} /> : 'Sign In'}
             </Button>
+            <Button
+              fullWidth
+              variant="text"
+              onClick={() => setShowChangePassword(true)}
+              disabled={loading}
+            >
+              Change Password
+            </Button>
           </Box>
         </Paper>
       </Box>
+
+      <ChangePassword 
+        open={showChangePassword} 
+        onClose={() => setShowChangePassword(false)} 
+      />
     </Container>
   );
 }
