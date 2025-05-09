@@ -1,18 +1,18 @@
 // src/pages/RelativeCarerDashboard.js
 import React from 'react';
 import { Grid, Container } from '@mui/material';
-import Timetable from '../components/Timetable';
-import EventsList from '../components/EventsList';
+import Timetable from '../components/TimetableCarer';
+import EventsList from '../components/EventsListCarer';
 import MealPlanner from '../components/MealPlanner';
 import ChatBox from '../components/ChatBox';
 
-function RelativeCarerDashboard() {
+function RelativeDashboard() {
   return (
     <div className="dashboard">
       <Container maxWidth="xl">
         <header>
-          <h1>Family & Carer Dashboard</h1>
-          <p>Stay updated on your loved one's care</p>
+          <h1>Family Member Dashboard</h1>
+          <p>Stay updated on your family member.</p>
         </header>
         
         <Grid container spacing={3}>
@@ -37,4 +37,4 @@ function RelativeCarerDashboard() {
   );
 }
 
-export default RelativeCarerDashboard;
+export default RelativeDashboard;

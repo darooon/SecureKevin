@@ -6,40 +6,42 @@ import {
   Button,
   Container,
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Paper,
   Select,
   TextField,
-  Typography
+  Typography,
+  CircularProgress
 } from '@mui/material';
+import { useAuth } from '../context/AuthContext';
+import ChangePassword from '../components/ChangePassword';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('');
-  const [error, setError] = useState('');
+  const [showChangePassword, setShowChangePassword] = useState(false);
   const navigate = useNavigate();
+  const { login, loading, error } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
 
     // Basic validation
     if (!username || !password || !userType) {
-      setError('Please fill in all fields');
       return;
     }
 
-    // In a real app, you would make an API call to verify credentials
-    // For now, we'll just simulate successful login and redirect
-    
-    // Simulate login success
-    console.log(`Logging in as ${userType}: ${username}`);
-    
-    // Redirect to appropriate dashboard
-    navigate(`/${userType}`);
+    try {
+      const success = await login(username, password, userType);
+      if (success) {
+        // Redirect to appropriate dashboard based on user type
+        navigate(`/${userType}`);
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+    }
   };
 
   return (
@@ -84,6 +86,7 @@ function Login() {
               autoFocus
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              disabled={loading}
             />
             <TextField
               margin="normal"
@@ -96,6 +99,7 @@ function Login() {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
             />
             <FormControl fullWidth margin="normal">
               <InputLabel id="user-type-label">User Type</InputLabel>
@@ -105,10 +109,13 @@ function Login() {
                 value={userType}
                 label="User Type"
                 onChange={(e) => setUserType(e.target.value)}
+                disabled={loading}
               >
                 <MenuItem value="doctor">Doctor</MenuItem>
+                <MenuItem value="nurse">Nurse</MenuItem>
                 <MenuItem value="patient">Patient</MenuItem>
-                <MenuItem value="relative">Family Member/Carer</MenuItem>
+                <MenuItem value="relative">Family Member</MenuItem>
+                <MenuItem value="carer">Family Member</MenuItem>
               </Select>
             </FormControl>
             <Button
@@ -116,19 +123,26 @@ function Login() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={loading}
             >
-              Sign In
+              {loading ? <CircularProgress size={24} /> : 'Sign In'}
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Typography variant="body2" color="text.secondary">
-                  Demo: Any username/password combination works
-                </Typography>
-              </Grid>
-            </Grid>
+            <Button
+              fullWidth
+              variant="text"
+              onClick={() => setShowChangePassword(true)}
+              disabled={loading}
+            >
+              Change Password
+            </Button>
           </Box>
         </Paper>
       </Box>
+
+      <ChangePassword 
+        open={showChangePassword} 
+        onClose={() => setShowChangePassword(false)} 
+      />
     </Container>
   );
 }
