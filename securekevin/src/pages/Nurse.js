@@ -163,7 +163,7 @@ const Nurse = () => {
         </div>
         <div className="flex-grow">
           <div className="bg-blue-50 p-4 rounded-lg mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Sarah Johnson, RN</h2>
+            <h2 className="text-2xl font-bold text-gray-800">Name here, RN</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
               <div className="flex items-center">
                 <span className="font-medium mr-2">ID:</span>
@@ -190,7 +190,7 @@ const Nurse = () => {
               <div className="space-y-2 text-gray-700">
                 <div className="flex items-center">
                   <span className="font-medium w-20">Email:</span>
-                  <span>sarah.johnson@securekevin.com</span>
+                  <span>Nurse@securekevin.com</span>
                 </div>
                 <div className="flex items-center">
                   <span className="font-medium w-20">Phone:</span>
@@ -721,7 +721,7 @@ const Nurse = () => {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-800">Nurse Dashboard</h1>
-              <p className="text-gray-600 mt-1">Welcome back, Sarah Johnson</p>
+              <p className="text-gray-600 mt-1">Welcome back, Nurse Name</p>
             </div>
             <div className="mt-4 md:mt-0">
               <div className="flex items-center bg-white px-3 py-2 rounded-lg shadow-sm">
