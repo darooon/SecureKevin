@@ -158,7 +158,6 @@ const Nurse = () => {
       <div className="flex flex-col md:flex-row md:items-start">
         <div className="md:mr-6 mb-4 md:mb-0 flex justify-center">
           <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 border-4 border-blue-100">
-            <span className="text-5xl font-light">SJ</span>
           </div>
         </div>
         <div className="flex-grow">
