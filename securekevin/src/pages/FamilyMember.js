@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { Button, Badge } from 'some-ui-library';
+import { Button } from 'some-ui-library';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { 
   Container, Row, Col, Card, Nav, Tab, Button, 
