@@ -1,4 +1,6 @@
-import { Badge } from 'some-ui-library'; // if you need Badge from here
+// REMOVE this line
+// import { Badge } from 'some-ui-library';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { 
   Container, Row, Col, Card, Nav, Tab, Button, 
