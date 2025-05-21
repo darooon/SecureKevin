@@ -1,31 +1,36 @@
-// src/pages/Carer.js
-import React from 'react';
-import { Grid, Container } from '@mui/material';
-import Timetable from '../components/TimetableCarer';
-import EventsList from '../components/EventsListCarer';
-import TimetableCarer from '../components/TimetableCarer';
+import React from "react";
 
-function CarerDashboard() {
-    return (
-      <div className="dashboard">
-        <Container maxWidth="xl">
-          <header>
-            <h1>Carer Dashboard</h1>
-            <p>Stay updated on your patient</p>
-          </header>
-          
-          <Grid container spacing={3}>
-            <Grid item xs={12} lg={8}>
-              <TimetableCarer userType="relative" />
-            </Grid>
-            
-            <Grid item xs={12} lg={4}>
-              <EventsList userType="relative" />
-            </Grid>
-          </Grid>
-        </Container>
+import Card from '../components/ui/card';
+import TimetableCarer from '../components/TimetableCarer';
+import EventsListCarer from '../components/EventsListCarer';
+
+const CarerDashboard = () => {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold tracking-tight mb-2">Carer Dashboard</h1>
+        <p className="text-muted-foreground">Stay updated on your patient's care and appointments</p>
       </div>
-    );
-  }
-  
-  export default CarerDashboard;
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Left column - Timetable */}
+        <div className="md:col-span-2">
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Daily Timetable</h2>
+            <TimetableCarer userType="carer" />
+          </Card>
+        </div>
+
+        {/* Right column - Events */}
+        <div>
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Patient Events</h2>
+            <EventsListCarer userType="carer" />
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CarerDashboard;

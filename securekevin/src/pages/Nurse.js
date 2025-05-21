@@ -1,4 +1,4 @@
-
+/*
 import React, { useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -782,3 +782,4 @@ const Nurse = () => {
 };
 
 export default Nurse;
+*/
