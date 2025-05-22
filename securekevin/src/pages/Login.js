@@ -114,7 +114,7 @@ function Login() {
                 <MenuItem value="doctor">Doctor</MenuItem>
                 <MenuItem value="nurse">Nurse</MenuItem>
                 <MenuItem value="patient">Patient</MenuItem>
-                <MenuItem value="relative">Family Member</MenuItem>
+                <MenuItem value="family">Family Member</MenuItem>
                 <MenuItem value="carer">Carer</MenuItem>
               </Select>
             </FormControl>
