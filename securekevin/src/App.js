@@ -42,7 +42,7 @@ function AppRoutes() {
       <Route 
         path="/family" 
         element={
-          <ProtectedRoute requiredRole="relative">
+          <ProtectedRoute requiredRole="family">
             <FamilyMember />
           </ProtectedRoute>
         } 
@@ -54,7 +54,7 @@ function AppRoutes() {
           <ProtectedRoute requiredRole="Carer">
             <Carer />
           </ProtectedRoute>
-        } 
+        }  
       />
       
       <Route 
