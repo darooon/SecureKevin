@@ -26,7 +26,7 @@ const rolePermissions = {
     canViewAllPatients: false,
     canManageStaff: false,
   },
-  relative: {
+  family: {
     canViewPatientRecords: true,
     canEditPatientRecords: false,
     canPrescribeMedication: false,
@@ -58,7 +58,7 @@ const mockUsers = {
     { username: 'M.Thompson', password: 'patient123', name: 'Margaret Thompson' },
     { username: 'S.Paul', password: 'patient456', name: 'Stephen Paul' }
   ],
-  relative: [
+  family: [
     { username: 'E.Thompson', password: 'relative123', name: 'Emily Thompson' },
     { username: 'M.Paul', password: 'relative456', name: 'Michaela Paul' }
   ],
