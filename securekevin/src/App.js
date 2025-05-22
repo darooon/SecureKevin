@@ -10,7 +10,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 import './styles/main.css';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "./family.css";
+import "./styles/family.css";
 
 
 

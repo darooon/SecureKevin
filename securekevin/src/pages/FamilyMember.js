@@ -4,7 +4,7 @@ import {
   Home, User, Calendar, CreditCard, Menu, ChevronRight,
   ChevronLeft, Bell, Settings, Activity, Heart, Clock, Check, AlertCircle
 } from 'lucide-react';
-import '../family.css';
+import '../styles/family.css';
 
 // Main Family Member Dashboard Component
 const FamilyMember = () => {
