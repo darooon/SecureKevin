@@ -1,109 +1,52 @@
-
 import React, { useState } from 'react';
 import { 
-  Home, User, Calendar, CreditCard, Menu, ChevronRight,
-  ChevronLeft, Bell, Settings, Activity, Heart, Clock, Check, AlertCircle
+  Home, User, Calendar, CreditCard, Bell, Settings, Activity, Heart, Clock, Check, AlertCircle
 } from 'lucide-react';
-import '../styles/family.css';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
+import DashboardLayout from '../components/DashboardLayout';
+import '../family.css';
 
 // Main Family Member Dashboard Component
 const FamilyMember = () => {
-  return (
-    <div className="healthcare-dashboard">
-      <Sidebar />
-      <main className="main-content">
-        <DashboardHeader />
-        
-        <div style={{ marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>Medical Overview</h2>
-          <MedicalOverview />
-        </div>
+  const [activeTab, setActiveTab] = useState('dashboard');
 
-        <div style={{ marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>Payment Details</h2>
-          <PaymentDetails />
-        </div>
-      </main>
-    </div>
-  );
-};
-
-// Sidebar Component
-const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const toggleSidebar = () => {
-    setCollapsed(!collapsed);
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
-  const navigationItems = [
-    { name: 'Dashboard', icon: Home, href: '/' },
-    { name: 'Patient Profile', icon: User, href: '/profile' },
-    { name: 'Medical Records', icon: Calendar, href: '/records' },
-    { name: 'Payments', icon: CreditCard, href: '/payments' },
-    { name: 'Settings', icon: Settings, href: '/settings' }
-  ];
-
   return (
-    <aside className={`sidebar ${collapsed ? 'sidebar-collapsed' : ''}`}>
-      <div className="sidebar-header">
-        <div className="sidebar-logo">
-          {!collapsed && <span>MediCare</span>}
-          {collapsed && <span>MC</span>}
-        </div>
-        <button 
-          onClick={toggleSidebar} 
-          style={{ 
-            marginLeft: 'auto',
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '4px'
-          }}
-        >
-          {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-        </button>
-      </div>
-      <nav className="sidebar-nav">
-        {navigationItems.map((item) => (
-          <a 
-            key={item.name}
-            href={item.href}
-            className={`sidebar-link ${item.name.toLowerCase() === 'dashboard' ? 'active' : ''}`}
-          >
-            <item.icon size={18} />
-            <span className="sidebar-link-text">{item.name}</span>
-          </a>
-        ))}
-      </nav>
-    </aside>
-  );
-};
+    <DashboardLayout activePage={activeTab}>
+      <Tabs defaultValue={activeTab} onValueChange={handleTabChange} className="w-full">
+        <TabsContent value="dashboard">
+          <div style={{ marginBottom: '2rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>Medical Overview</h2>
+            <MedicalOverview />
+          </div>
 
-// Dashboard Header Component
-const DashboardHeader = () => {
-  return (
-    <div className="dashboard-header">
-      <h1 className="dashboard-title">Family Healthcare Dashboard</h1>
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        <button style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
-          <Bell size={20} />
-        </button>
-        <div style={{ 
-          width: '36px', 
-          height: '36px', 
-          borderRadius: '50%', 
-          backgroundColor: '#1E88E5', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          color: 'white',
-          fontWeight: '500'
-        }}>
-          JD
-        </div>
-      </div>
-    </div>
+          <div style={{ marginBottom: '2rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>Payment Details</h2>
+            <PaymentDetails />
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="profile">
+          <PatientProfile />
+        </TabsContent>
+        
+        <TabsContent value="records">
+          <MedicalRecords />
+        </TabsContent>
+        
+        <TabsContent value="payments">
+          <PaymentsPage />
+        </TabsContent>
+        
+        <TabsContent value="settings">
+          <SettingsPage />
+        </TabsContent>
+      </Tabs>
+    </DashboardLayout>
   );
 };
 
@@ -529,6 +472,494 @@ const PaymentDetails = () => {
         </div>
       )}
     </section>
+  );
+};
+
+// Patient Profile Page
+const PatientProfile = () => {
+  return (
+    <div className="profile-page">
+      <h1 className="page-title">Patient Profile</h1>
+      
+      <div className="card">
+        <div className="card-header">
+          <h2 className="card-title">
+            <User size={20} />
+            <span>Personal Information</span>
+          </h2>
+        </div>
+        
+        <div className="profile-details">
+          <div className="profile-avatar">
+            <div className="avatar-placeholder">NH</div>
+          </div>
+          
+          <div className="profile-info">
+            <div className="info-group">
+              <h3 className="info-label">Name</h3>
+              <p className="info-value">namehere</p>
+            </div>
+            
+            <div className="info-group">
+              <h3 className="info-label">Date of Birth</h3>
+              <p className="info-value">January 15, 1985</p>
+            </div>
+            
+            <div className="info-group">
+              <h3 className="info-label">Contact Number</h3>
+              <p className="info-value">(555) 123-4567</p>
+            </div>
+            
+            <div className="info-group">
+              <h3 className="info-label">Email Address</h3>
+              <p className="info-value">namehere@example.com</p>
+            </div>
+            
+            <div className="info-group">
+              <h3 className="info-label">Emergency Contact</h3>
+              <p className="info-value">namehere (Spouse) - (555) 987-6543</p>
+            </div>
+          </div>
+        </div>
+        
+        <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
+          <button className="primary-button">
+            Edit Profile
+          </button>
+          <button className="secondary-button">
+            Change Password
+          </button>
+        </div>
+      </div>
+      
+      <div className="card" style={{ marginTop: '2rem' }}>
+        <div className="card-header">
+          <h2 className="card-title">
+            <Activity size={20} />
+            <span>Health Information</span>
+          </h2>
+        </div>
+        
+        <div className="health-details">
+          <div className="info-group">
+            <h3 className="info-label">Blood Type</h3>
+            <p className="info-value">A+</p>
+          </div>
+          
+          <div className="info-group">
+            <h3 className="info-label">Height</h3>
+            <p className="info-value">5'10" (178 cm)</p>
+          </div>
+          
+          <div className="info-group">
+            <h3 className="info-label">Weight</h3>
+            <p className="info-value">168 lbs (76 kg)</p>
+          </div>
+          
+          <div className="info-group">
+            <h3 className="info-label">Allergies</h3>
+            <p className="info-value">Penicillin, Peanuts</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Medical Records Page
+const MedicalRecords = () => {
+  const [activeTab, setActiveTab] = useState('visits');
+  
+  const medicalVisits = [
+    {
+      id: "VS123456",
+      date: "April 15, 2025",
+      doctor: "namehere",
+      specialty: "Family Medicine",
+      reason: "Annual Physical",
+      notes: "Patient is in good health. Follow-up in 12 months."
+    },
+    {
+      id: "VS123455",
+      date: "March 3, 2025",
+      doctor: "namehere",
+      specialty: "Dermatology",
+      reason: "Skin Rash",
+      notes: "Prescribed topical cream. Rash should clear up in 7-10 days."
+    },
+    {
+      id: "VS123454",
+      date: "January 22, 2025",
+      doctor: "namehere",
+      specialty: "Orthopedics",
+      reason: "Knee Pain",
+      notes: "MRI scheduled. Physical therapy recommended twice weekly."
+    }
+  ];
+  
+  const prescriptions = [
+    {
+      id: "PR123456",
+      medication: "Lisinopril",
+      dosage: "10mg",
+      frequency: "Once daily",
+      prescribed: "April 15, 2025",
+      refills: "3 remaining",
+      doctor: "namehere"
+    },
+    {
+      id: "PR123455",
+      medication: "Atorvastatin",
+      dosage: "20mg",
+      frequency: "Once daily at bedtime",
+      prescribed: "April 15, 2025",
+      refills: "3 remaining",
+      doctor: "namehere"
+    },
+    {
+      id: "PR123454",
+      medication: "Triamcinolone Cream",
+      dosage: "0.1%",
+      frequency: "Apply to affected area twice daily",
+      prescribed: "March 3, 2025",
+      refills: "0 remaining",
+      doctor: "namehere"
+    }
+  ];
+  
+  const testResults = [
+    {
+      id: "TR123456",
+      test: "Complete Blood Count",
+      date: "April 15, 2025",
+      status: "completed",
+      result: "Normal",
+      notes: "All values within normal range."
+    },
+    {
+      id: "TR123455",
+      test: "Lipid Panel",
+      date: "April 15, 2025",
+      status: "completed",
+      result: "Abnormal",
+      notes: "LDL slightly elevated. Dietary changes recommended."
+    },
+    {
+      id: "TR123454",
+      test: "MRI - Right Knee",
+      date: "January 24, 2025",
+      status: "completed",
+      result: "Abnormal",
+      notes: "Minor meniscus tear. Physical therapy recommended."
+    }
+  ];
+  
+  return (
+    <div className="records-page">
+      <h1 className="page-title">Medical Records</h1>
+      
+      <div className="tab-group">
+        <div 
+          className={`tab ${activeTab === 'visits' ? 'active' : ''}`}
+          onClick={() => setActiveTab('visits')}
+        >
+          Doctor Visits
+        </div>
+        <div 
+          className={`tab ${activeTab === 'prescriptions' ? 'active' : ''}`}
+          onClick={() => setActiveTab('prescriptions')}
+        >
+          Prescriptions
+        </div>
+        <div 
+          className={`tab ${activeTab === 'tests' ? 'active' : ''}`}
+          onClick={() => setActiveTab('tests')}
+        >
+          Test Results
+        </div>
+      </div>
+      
+      {activeTab === 'visits' && (
+        <div className="card">
+          <div className="card-header">
+            <h2 className="card-title">
+              <Calendar size={20} />
+              <span>Recent Doctor Visits</span>
+            </h2>
+          </div>
+          <div className="table-container">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Doctor</th>
+                  <th>Specialty</th>
+                  <th>Reason</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {medicalVisits.map((visit) => (
+                  <tr key={visit.id}>
+                    <td>{visit.date}</td>
+                    <td>{visit.doctor}</td>
+                    <td>{visit.specialty}</td>
+                    <td>{visit.reason}</td>
+                    <td>{visit.notes}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+            <button className="secondary-button">View All Visits</button>
+          </div>
+        </div>
+      )}
+      
+      {activeTab === 'prescriptions' && (
+        <div className="card">
+          <div className="card-header">
+            <h2 className="card-title">
+              <Clock size={20} />
+              <span>Current Prescriptions</span>
+            </h2>
+          </div>
+          <div className="table-container">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Medication</th>
+                  <th>Dosage</th>
+                  <th>Frequency</th>
+                  <th>Prescribed</th>
+                  <th>Refills</th>
+                  <th>Doctor</th>
+                </tr>
+              </thead>
+              <tbody>
+                {prescriptions.map((prescription) => (
+                  <tr key={prescription.id}>
+                    <td>{prescription.medication}</td>
+                    <td>{prescription.dosage}</td>
+                    <td>{prescription.frequency}</td>
+                    <td>{prescription.prescribed}</td>
+                    <td>{prescription.refills}</td>
+                    <td>{prescription.doctor}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+            <button className="secondary-button">Request Refill</button>
+          </div>
+        </div>
+      )}
+      
+      {activeTab === 'tests' && (
+        <div className="card">
+          <div className="card-header">
+            <h2 className="card-title">
+              <Activity size={20} />
+              <span>Test Results</span>
+            </h2>
+          </div>
+          <div className="table-container">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Test</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Result</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {testResults.map((test) => (
+                  <tr key={test.id}>
+                    <td>{test.test}</td>
+                    <td>{test.date}</td>
+                    <td>
+                      <StatusIndicator status={test.status} />
+                    </td>
+                    <td>{test.result}</td>
+                    <td>{test.notes}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+            <button className="secondary-button">Download Results</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Payments Page
+const PaymentsPage = () => {
+  return (
+    <div className="payments-page">
+      <h1 className="page-title">Payments</h1>
+      
+      <div className="card">
+        <div className="card-header">
+          <h2 className="card-title">
+            <CreditCard size={20} />
+            <span>Payment Methods</span>
+          </h2>
+        </div>
+        
+        <div className="payment-methods">
+          <div className="payment-method-card">
+            <div className="payment-method-header">
+              <div className="payment-method-type">VISA</div>
+              <div className="payment-method-default-badge">Default</div>
+            </div>
+            <div className="payment-method-number">**** **** **** 4242</div>
+            <div className="payment-method-details">
+              <div>namehere</div>
+              <div>Expires 09/2026</div>
+            </div>
+          </div>
+          
+          <div className="payment-method-card add-new">
+            <div className="add-payment-method">
+              <div className="add-icon">+</div>
+              <div>Add New Payment Method</div>
+            </div>
+          </div>
+        </div>
+        
+        <div style={{ marginTop: '2rem' }}>
+          <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '1rem' }}>Recent Payments</h3>
+          <div className="table-container">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Payment Method</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>May 1, 2025</td>
+                  <td>Monthly subscription</td>
+                  <td>$299.99</td>
+                  <td>VISA ending in 4242</td>
+                  <td><StatusIndicator status="completed" /></td>
+                </tr>
+                <tr>
+                  <td>April 15, 2025</td>
+                  <td>Specialist consultation</td>
+                  <td>$75.00</td>
+                  <td>VISA ending in 4242</td>
+                  <td><StatusIndicator status="completed" /></td>
+                </tr>
+                <tr>
+                  <td>April 1, 2025</td>
+                  <td>Monthly subscription</td>
+                  <td>$299.99</td>
+                  <td>VISA ending in 4242</td>
+                  <td><StatusIndicator status="completed" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Settings Page
+const SettingsPage = () => {
+  return (
+    <div className="settings-page">
+      <h1 className="page-title">Settings</h1>
+      
+      <div className="card">
+        <div className="card-header">
+          <h2 className="card-title">
+            <Settings size={20} />
+            <span>Account Settings</span>
+          </h2>
+        </div>
+        
+        <div className="settings-group">
+          <h3 className="settings-group-title">Personal Information</h3>
+          <div className="settings-item">
+            <div className="settings-item-label">Name</div>
+            <div className="settings-item-value">namehere</div>
+            <button className="secondary-button settings-button">Edit</button>
+          </div>
+          <div className="settings-item">
+            <div className="settings-item-label">Email</div>
+            <div className="settings-item-value">namehere@example.com</div>
+            <button className="secondary-button settings-button">Edit</button>
+          </div>
+          <div className="settings-item">
+            <div className="settings-item-label">Phone</div>
+            <div className="settings-item-value">(555) 123-4567</div>
+            <button className="secondary-button settings-button">Edit</button>
+          </div>
+          <div className="settings-item">
+            <div className="settings-item-label">Password</div>
+            <div className="settings-item-value">••••••••••••</div>
+            <button className="secondary-button settings-button">Change</button>
+          </div>
+        </div>
+        
+        <div className="settings-group">
+          <h3 className="settings-group-title">Notifications</h3>
+          <div className="settings-item">
+            <div className="settings-item-label">Email Notifications</div>
+            <div className="settings-item-value">Enabled</div>
+            <div className="toggle-switch enabled"></div>
+          </div>
+          <div className="settings-item">
+            <div className="settings-item-label">SMS Notifications</div>
+            <div className="settings-item-value">Disabled</div>
+            <div className="toggle-switch"></div>
+          </div>
+          <div className="settings-item">
+            <div className="settings-item-label">Appointment Reminders</div>
+            <div className="settings-item-value">24 hours before</div>
+            <button className="secondary-button settings-button">Edit</button>
+          </div>
+        </div>
+        
+        <div className="settings-group">
+          <h3 className="settings-group-title">Privacy</h3>
+          <div className="settings-item">
+            <div className="settings-item-label">Two-Factor Authentication</div>
+            <div className="settings-item-value">Disabled</div>
+            <button className="secondary-button settings-button">Enable</button>
+          </div>
+          <div className="settings-item">
+            <div className="settings-item-label">Data Sharing</div>
+            <div className="settings-item-value">Minimal</div>
+            <button className="secondary-button settings-button">Edit</button>
+          </div>
+        </div>
+        
+        <div style={{ marginTop: '2rem', display: 'flex', gap: '0.75rem' }}>
+          <button className="primary-button">
+            Save Changes
+          </button>
+          <button className="secondary-button">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 
