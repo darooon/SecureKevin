@@ -25,9 +25,13 @@ const ProtectedRoute = ({ children, requiredRole }) => {
     return <Navigate to="/login" />;
   }
 
-  if (requiredRole && user.role !== requiredRole) {
-    return <Navigate to={`/${user.role}`} />;
-  }
+const normalizedUserRole = user.role.toLowerCase();
+const normalizedRequiredRole = requiredRole?.toLowerCase();
+
+if (requiredRole && normalizedUserRole !== normalizedRequiredRole) {
+  return <Navigate to={`/${normalizedUserRole}`} />;
+}
+
 
   return children;
 };
