@@ -51,7 +51,7 @@ function AppRoutes() {
       <Route 
         path="/carer" 
         element={
-          <ProtectedRoute requiredRole="relative">
+          <ProtectedRoute requiredRole="Carer">
             <Carer />
           </ProtectedRoute>
         } 
