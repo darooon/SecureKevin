@@ -6,12 +6,12 @@ const FamilyDashboard = () => {
 
   // Mock patient data
   const [patientInfo] = useState({
-    name: 'Robert Johnson',
+    name: 'Name',
     age: 78,
     room: '205A',
     admissionDate: '2024-11-15',
-    primaryNurse: 'Sarah Wilson, RN',
-    primaryDoctor: 'Dr. Michael Chen'
+    primaryNurse: 'Nurse Name, RN',
+    primaryDoctor: 'Dr. Name'
   });
 
   // Mock medical overview data
