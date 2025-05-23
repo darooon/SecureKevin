@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/family-dashboard.css';
+import '../styles/family.css';
 
 const FamilyDashboard = () => {
   const [activeTab, setActiveTab] = useState('medical-overview');
