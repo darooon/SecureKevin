@@ -39,9 +39,10 @@ const Nurse = () => {
   ]);
 
   const [patients, setPatients] = useState([
-    { id: 1, name: 'John Doe', age: 68, room: '101' },
-    { id: 2, name: 'Jane Smith', age: 72, room: '102' },
-    { id: 3, name: 'Robert Johnson', age: 65, room: '103' },
+    { id: 1, name: 'Margaret Thompson', age: 68, room: '101' },
+    { id: 2, name: 'Stephen Paul', age: 72, room: '102' },
+    /* { id: 3, name: 'SpareName', age: 65, room: '103' },
+    */
   ]);
 
   const [selectedPatient, setSelectedPatient] = useState(null);

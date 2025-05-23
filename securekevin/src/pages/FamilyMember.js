@@ -1,966 +1,387 @@
 import React, { useState } from 'react';
-import { 
-  Home, User, Calendar, CreditCard, Bell, Settings, Activity, Heart, Clock, Check, AlertCircle
-} from 'lucide-react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
-import DashboardLayout from '../components/DashboardLayout';
-import '../family.css';
+import '../styles/family.css';
 
-// Main Family Member Dashboard Component
-const FamilyMember = () => {
-  const [activeTab, setActiveTab] = useState('dashboard');
+const FamilyDashboard = () => {
+  const [activeTab, setActiveTab] = useState('medical-overview');
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
+  // Mock patient data
+  const [patientInfo] = useState({
+    name: 'Robert Johnson',
+    age: 78,
+    room: '205A',
+    admissionDate: '2024-11-15',
+    primaryNurse: 'Sarah Wilson, RN',
+    primaryDoctor: 'Dr. Michael Chen'
+  });
 
-  return (
-    <DashboardLayout activePage={activeTab}>
-      <Tabs defaultValue={activeTab} onValueChange={handleTabChange} className="w-full">
-        <TabsContent value="dashboard">
-          <div style={{ marginBottom: '2rem' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>Medical Overview</h2>
-            <MedicalOverview />
-          </div>
-
-          <div style={{ marginBottom: '2rem' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>Payment Details</h2>
-            <PaymentDetails />
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="profile">
-          <PatientProfile />
-        </TabsContent>
-        
-        <TabsContent value="records">
-          <MedicalRecords />
-        </TabsContent>
-        
-        <TabsContent value="payments">
-          <PaymentsPage />
-        </TabsContent>
-        
-        <TabsContent value="settings">
-          <SettingsPage />
-        </TabsContent>
-      </Tabs>
-    </DashboardLayout>
-  );
-};
-
-// Overview Card Component
-const OverviewCard = ({ title, value, description, icon: Icon }) => (
-  <div className="overview-card">
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-      <h3 className="overview-title">{title}</h3>
-      <Icon size={18} color="#1E88E5" />
-    </div>
-    <p className="overview-value">{value}</p>
-    <p className="overview-description">{description}</p>
-  </div>
-);
-
-// Weekly Overview Component
-const WeeklyOverview = ({ data }) => {
-  return (
-    <div className="card">
-      <div className="card-header">
-        <h2 className="card-title">
-          <Calendar size={20} />
-          <span>{data.week}</span>
-        </h2>
-        <span style={{ fontSize: '0.875rem', color: '#6B7280' }}>{data.dateRange}</span>
-      </div>
-      <div className="card-grid">
-        {data.metrics.map((metric, index) => (
-          <OverviewCard
-            key={index}
-            title={metric.title}
-            value={metric.value}
-            description={metric.description}
-            icon={metric.icon}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// Medical Overview Component
-const MedicalOverview = () => {
-  const [activeTab, setActiveTab] = useState('current');
-  
-  // Sample data
-  const currentWeekData = {
-    week: 'Current Week',
-    dateRange: 'May 10 - May 16, 2025',
-    metrics: [
-      {
-        title: 'Heart Rate',
-        value: '72 bpm',
-        description: 'Average resting heart rate',
-        icon: Heart
-      },
-      {
-        title: 'Blood Pressure',
-        value: '120/80',
-        description: 'Average systolic/diastolic',
-        icon: Activity
-      },
-      {
-        title: 'Medication Adherence',
-        value: '95%',
-        description: '19 out of 20 doses taken',
-        icon: Clock
-      },
-      {
-        title: 'Physical Activity',
-        value: '8.2k',
-        description: 'Average daily steps',
-        icon: Activity
-      }
+  // Mock medical overview data
+  const [currentWeekOverview] = useState({
+    weekOf: '2025-05-19',
+    overallCondition: 'Stable and Improving',
+    vitalSigns: {
+      bloodPressure: '125/80 mmHg',
+      heartRate: '72 bpm',
+      temperature: '98.6°F',
+      oxygenSaturation: '97%'
+    },
+    medications: [
+      { name: 'Lisinopril 10mg', frequency: 'Once daily', lastGiven: '2025-05-22 08:00' },
+      { name: 'Metformin 500mg', frequency: 'Twice daily', lastGiven: '2025-05-22 18:00' },
+      { name: 'Aspirin 81mg', frequency: 'Once daily', lastGiven: '2025-05-22 08:00' }
+    ],
+    activities: [
+      { date: '2025-05-22', activity: 'Physical Therapy Session', notes: 'Great progress with mobility exercises' },
+      { date: '2025-05-21', activity: 'Doctor Consultation', notes: 'Reviewed treatment plan, adjusting medication' },
+      { date: '2025-05-20', activity: 'Vital Signs Check', notes: 'All vitals within normal range' },
+      { date: '2025-05-19', activity: 'Blood Work', notes: 'Lab results show improvement in blood sugar levels' }
+    ],
+    nurseNotes: [
+      { date: '2025-05-22', note: 'Patient in good spirits, engaging well with staff and therapy' },
+      { date: '2025-05-21', note: 'Appetite has improved, eating full meals' },
+      { date: '2025-05-20', note: 'Sleeping well, no complaints of pain' }
     ]
-  };
+  });
 
-  const previousWeeks = [
+  const [previousWeeks] = useState([
     {
-      week: 'Last Week',
-      dateRange: 'May 3 - May 9, 2025',
-      metrics: [
-        {
-          title: 'Heart Rate',
-          value: '75 bpm',
-          description: 'Average resting heart rate',
-          icon: Heart
-        },
-        {
-          title: 'Blood Pressure',
-          value: '125/85',
-          description: 'Average systolic/diastolic',
-          icon: Activity
-        },
-        {
-          title: 'Medication Adherence',
-          value: '90%',
-          description: '18 out of 20 doses taken',
-          icon: Clock
-        },
-        {
-          title: 'Physical Activity',
-          value: '7.8k',
-          description: 'Average daily steps',
-          icon: Activity
-        }
-      ]
+      weekOf: '2025-05-12',
+      overallCondition: 'Stable',
+      keyEvents: ['Started new physical therapy routine', 'Medication adjustment', 'Family visit on Sunday'],
+      avgVitals: 'Blood pressure: 130/85, Heart rate: 75 bpm'
     },
     {
-      week: 'Two Weeks Ago',
-      dateRange: 'April 26 - May 2, 2025',
-      metrics: [
-        {
-          title: 'Heart Rate',
-          value: '78 bpm',
-          description: 'Average resting heart rate',
-          icon: Heart
-        },
-        {
-          title: 'Blood Pressure',
-          value: '130/88',
-          description: 'Average systolic/diastolic',
-          icon: Activity
-        },
-        {
-          title: 'Medication Adherence',
-          value: '85%',
-          description: '17 out of 20 doses taken',
-          icon: Clock
-        },
-        {
-          title: 'Physical Activity',
-          value: '6.5k',
-          description: 'Average daily steps',
-          icon: Activity
-        }
-      ]
+      weekOf: '2025-05-05',
+      overallCondition: 'Good Progress',
+      keyEvents: ['Successful mobility assessment', 'Dietary changes implemented', 'Social activities participation'],
+      avgVitals: 'Blood pressure: 135/88, Heart rate: 78 bpm'
+    },
+    {
+      weekOf: '2025-04-28',
+      overallCondition: 'Recovering Well',
+      keyEvents: ['Initial assessment completed', 'Care plan established', 'Family orientation meeting'],
+      avgVitals: 'Blood pressure: 140/90, Heart rate: 80 bpm'
     }
-  ];
+  ]);
 
-  return (
-    <section>
-      <div className="tab-group">
-        <div 
-          className={`tab ${activeTab === 'current' ? 'active' : ''}`}
-          onClick={() => setActiveTab('current')}
-        >
-          Current Overview
-        </div>
-        <div 
-          className={`tab ${activeTab === 'previous' ? 'active' : ''}`}
-          onClick={() => setActiveTab('previous')}
-        >
-          Previous Overviews
-        </div>
-      </div>
+  // Mock billing data
+  const [currentBilling] = useState({
+    monthlyRate: 4500,
+    additionalServices: [
+      { service: 'Physical Therapy', cost: 300, frequency: 'Weekly' },
+      { service: 'Medication Management', cost: 150, frequency: 'Monthly' },
+      { service: 'Doctor Consultations', cost: 200, frequency: 'Bi-weekly' }
+    ],
+    currentBalance: 4850,
+    nextPaymentDue: '2025-06-01',
+    paymentMethod: 'Auto-pay (Bank Transfer)'
+  });
 
-      {activeTab === 'current' && (
-        <WeeklyOverview data={currentWeekData} />
-      )}
+  const [previousTransactions] = useState([
+    { id: 1, date: '2025-05-01', description: 'Monthly Care Fee - May 2025', amount: 4500, status: 'Paid' },
+    { id: 2, date: '2025-05-01', description: 'Physical Therapy - May 2025', amount: 300, status: 'Paid' },
+    { id: 3, date: '2025-04-01', description: 'Monthly Care Fee - April 2025', amount: 4500, status: 'Paid' },
+    { id: 4, date: '2025-04-01', description: 'Doctor Consultation', amount: 200, status: 'Paid' },
+    { id: 5, date: '2025-03-01', description: 'Monthly Care Fee - March 2025', amount: 4500, status: 'Paid' }
+  ]);
 
-      {activeTab === 'previous' && (
-        <>
-          {previousWeeks.map((week, index) => (
-            <WeeklyOverview key={index} data={week} />
-          ))}
-        </>
-      )}
-    </section>
-  );
-};
+  const [upcomingTransactions] = useState([
+    { id: 1, date: '2025-06-01', description: 'Monthly Care Fee - June 2025', amount: 4500, status: 'Scheduled' },
+    { id: 2, date: '2025-06-01', description: 'Physical Therapy - June 2025', amount: 300, status: 'Scheduled' },
+    { id: 3, date: '2025-06-15', description: 'Doctor Consultation', amount: 200, status: 'Scheduled' }
+  ]);
 
-// Status Indicator Component for Payments
-const StatusIndicator = ({ status }) => {
-  let statusClass = '';
-  let statusText = '';
-  
-  switch(status) {
-    case 'completed':
-      statusClass = 'status-dot-green';
-      statusText = 'Completed';
-      break;
-    case 'pending':
-      statusClass = 'status-dot-amber';
-      statusText = 'Pending';
-      break;
-    case 'scheduled':
-      statusClass = 'status-dot-amber';
-      statusText = 'Scheduled';
-      break;
-    case 'failed':
-      statusClass = 'status-dot-red';
-      statusText = 'Failed';
-      break;
-    default:
-      statusClass = '';
-      statusText = status;
-  }
-  
-  return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <span className={`status-dot ${statusClass}`}></span>
-      <span>{statusText}</span>
-    </div>
-  );
-};
-
-// Payment Details Component
-const PaymentDetails = () => {
-  const [activeTab, setActiveTab] = useState('current');
-
-  // Sample billing details
-  const billingDetails = {
-    planName: "Family Health Plus",
-    monthlyCost: "$299.99",
-    nextBillingDate: "June 1, 2025",
-    paymentMethod: "VISA ending in 4242",
-    billingAddress: "123 Healthcare Ave, Medical City, MD 20814"
-  };
-
-  // Sample transactions data
-  const transactions = [
-    {
-      id: "TX123456",
-      date: "May 1, 2025",
-      description: "Monthly subscription",
-      amount: "$299.99",
-      status: "completed"
-    },
-    {
-      id: "TX123455",
-      date: "April 1, 2025",
-      description: "Monthly subscription",
-      amount: "$299.99",
-      status: "completed"
-    },
-    {
-      id: "TX123454",
-      date: "March 1, 2025",
-      description: "Monthly subscription",
-      amount: "$299.99",
-      status: "completed"
-    },
-    {
-      id: "TX123453",
-      date: "February 1, 2025",
-      description: "Monthly subscription",
-      amount: "$274.99",
-      status: "completed"
-    }
-  ];
-
-  // Sample upcoming transactions
-  const upcomingTransactions = [
-    {
-      id: "UTX12345",
-      date: "June 1, 2025",
-      description: "Monthly subscription",
-      amount: "$299.99",
-      status: "pending"
-    },
-    {
-      id: "UTX12346",
-      date: "June 15, 2025",
-      description: "Specialist consultation fee",
-      amount: "$150.00",
-      status: "scheduled"
-    }
-  ];
-
-  return (
-    <section>
-      <div className="tab-group">
-        <div 
-          className={`tab ${activeTab === 'current' ? 'active' : ''}`}
-          onClick={() => setActiveTab('current')}
-        >
-          Billing Details
-        </div>
-        <div 
-          className={`tab ${activeTab === 'previous' ? 'active' : ''}`}
-          onClick={() => setActiveTab('previous')}
-        >
-          Previous Transactions
-        </div>
-        <div 
-          className={`tab ${activeTab === 'upcoming' ? 'active' : ''}`}
-          onClick={() => setActiveTab('upcoming')}
-        >
-          Upcoming Payments
-        </div>
-      </div>
-
-      {activeTab === 'current' && (
-        <div className="card">
-          <div className="card-header">
-            <h2 className="card-title">
-              <CreditCard size={20} />
-              <span>Current Billing Information</span>
-            </h2>
+  // Render medical overview section
+  const renderMedicalOverview = () => (
+    <div className="section-container">
+      <h2 className="section-title">Medical Overview</h2>
+      
+      {/* Patient Information Card */}
+      <div className="patient-info-card">
+        <div className="patient-header">
+          <div className="patient-avatar">
+            <div className="avatar-placeholder">
+              {patientInfo.name.split(' ').map(n => n[0]).join('')}
+            </div>
           </div>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
-            <div className="overview-card">
-              <h3 className="overview-title">Plan</h3>
-              <p style={{ fontSize: '1.25rem', fontWeight: '600' }}>{billingDetails.planName}</p>
-              <p className="overview-description">Family coverage for 4 members</p>
-            </div>
-            
-            <div className="overview-card">
-              <h3 className="overview-title">Monthly Cost</h3>
-              <p style={{ fontSize: '1.5rem', fontWeight: '700' }}>{billingDetails.monthlyCost}</p>
-              <p className="overview-description">Billed on the 1st of each month</p>
-            </div>
-
-            <div className="overview-card">
-              <h3 className="overview-title">Next Billing Date</h3>
-              <p style={{ fontSize: '1.25rem', fontWeight: '600' }}>{billingDetails.nextBillingDate}</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginTop: '0.5rem' }}>
-                <Clock size={16} />
-                <p className="overview-description">Auto-payment scheduled</p>
+          <div className="patient-details">
+            <h3 className="patient-name">{patientInfo.name}</h3>
+            <div className="patient-meta">
+              <div className="meta-item">
+                <span className="meta-label">Age:</span>
+                <span className="meta-value">{patientInfo.age}</span>
+              </div>
+              <div className="meta-item">
+                <span className="meta-label">Room:</span>
+                <span className="meta-value">{patientInfo.room}</span>
+              </div>
+              <div className="meta-item">
+                <span className="meta-label">Admitted:</span>
+                <span className="meta-value">{patientInfo.admissionDate}</span>
               </div>
             </div>
+            <div className="care-team">
+              <div className="team-member">
+                <span className="team-label">Primary Nurse:</span>
+                <span className="team-value">{patientInfo.primaryNurse}</span>
+              </div>
+              <div className="team-member">
+                <span className="team-label">Primary Doctor:</span>
+                <span className="team-value">{patientInfo.primaryDoctor}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <div className="overview-card">
-              <h3 className="overview-title">Payment Method</h3>
-              <p style={{ fontSize: '1.25rem', fontWeight: '600' }}>{billingDetails.paymentMethod}</p>
-              <p className="overview-description">Expires 09/2026</p>
+      {/* Current Week Overview */}
+      <div className="overview-section">
+        <h3 className="subsection-title">Current Week Overview - Week of {currentWeekOverview.weekOf}</h3>
+        
+        <div className="condition-banner">
+          <div className="condition-indicator good"></div>
+          <div className="condition-text">
+            <span className="condition-label">Overall Condition:</span>
+            <span className="condition-value">{currentWeekOverview.overallCondition}</span>
+          </div>
+        </div>
+
+        <div className="overview-grid">
+          {/* Current Medications - Removed the Vital Signs section and expanded this to take full width */}
+          <div className="overview-card full-width">
+            <h4 className="card-title">Current Medications</h4>
+            <div className="medications-list">
+              {currentWeekOverview.medications.map((med, index) => (
+                <div key={index} className="medication-item">
+                  <div className="med-name">{med.name}</div>
+                  <div className="med-frequency">{med.frequency}</div>
+                  <div className="med-last-given">Last given: {med.lastGiven}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Activities */}
+        <div className="activities-section">
+          <h4 className="card-title">Recent Medical Activities</h4>
+          <div className="activities-table">
+            <div className="table-header">
+              <div className="header-cell">Date</div>
+              <div className="header-cell">Activity</div>
+              <div className="header-cell">Notes</div>
+            </div>
+            {currentWeekOverview.activities.map((activity, index) => (
+              <div key={index} className="table-row">
+                <div className="table-cell">{activity.date}</div>
+                <div className="table-cell">{activity.activity}</div>
+                <div className="table-cell">{activity.notes}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Nurse Notes */}
+        <div className="nurse-notes-section">
+          <h4 className="card-title">Recent Nurse Notes</h4>
+          <div className="notes-list">
+            {currentWeekOverview.nurseNotes.map((note, index) => (
+              <div key={index} className="note-item">
+                <div className="note-date">{note.date}</div>
+                <div className="note-content">{note.note}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Previous Weeks Overview */}
+      <div className="previous-weeks-section">
+        <h3 className="subsection-title">Previous Weekly Overviews</h3>
+        <div className="weeks-grid">
+          {previousWeeks.map((week, index) => (
+            <div key={index} className="week-card">
+              <div className="week-header">
+                <h4 className="week-title">Week of {week.weekOf}</h4>
+                <div className="week-condition">{week.overallCondition}</div>
+              </div>
+              <div className="week-content">
+                <div className="week-section">
+                  <h5 className="week-section-title">Key Events</h5>
+                  <ul className="events-list">
+                    {week.keyEvents.map((event, eventIndex) => (
+                      <li key={eventIndex} className="event-item">{event}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="week-section">
+                  <h5 className="week-section-title">Average Vitals</h5>
+                  <p className="vitals-summary">{week.avgVitals}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Render payment details section
+  const renderPaymentDetails = () => (
+    <div className="section-container">
+      <h2 className="section-title">Payment Details</h2>
+      
+      {/* Current Billing Information */}
+      <div className="billing-overview">
+        <h3 className="subsection-title">Current Billing Information</h3>
+        
+        <div className="billing-grid">
+          <div className="billing-card primary">
+            <h4 className="billing-title">Monthly Care Fee</h4>
+            <div className="billing-amount">${currentBilling.monthlyRate.toLocaleString()}</div>
+            <div className="billing-details">
+              <div className="detail-item">
+                <span className="detail-label">Current Balance:</span>
+                <span className="detail-value">${currentBilling.currentBalance.toLocaleString()}</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-label">Next Payment Due:</span>
+                <span className="detail-value">{currentBilling.nextPaymentDue}</span>
+              </div>
+              <div className="detail-item">
+                <span className="detail-label">Payment Method:</span>
+                <span className="detail-value">{currentBilling.paymentMethod}</span>
+              </div>
             </div>
           </div>
 
-          <div style={{ marginTop: '1.5rem' }}>
-            <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.5rem' }}>Billing Address</h3>
-            <p>{billingDetails.billingAddress}</p>
+          <div className="billing-card">
+            <h4 className="billing-title">Additional Services</h4>
+            <div className="services-list">
+              {currentBilling.additionalServices.map((service, index) => (
+                <div key={index} className="service-item">
+                  <div className="service-name">{service.service}</div>
+                  <div className="service-cost">${service.cost}</div>
+                  <div className="service-frequency">{service.frequency}</div>
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+      </div>
 
-          <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
-            <button className="primary-button">
-              Update Payment Method
+      {/* Previous Transactions */}
+      <div className="transactions-section">
+        <h3 className="subsection-title">Previous Transactions</h3>
+        <div className="transactions-table">
+          <div className="table-header">
+            <div className="header-cell">Date</div>
+            <div className="header-cell">Description</div>
+            <div className="header-cell">Amount</div>
+            <div className="header-cell">Status</div>
+          </div>
+          {previousTransactions.map((transaction) => (
+            <div key={transaction.id} className="table-row">
+              <div className="table-cell">{transaction.date}</div>
+              <div className="table-cell">{transaction.description}</div>
+              <div className="table-cell">${transaction.amount.toLocaleString()}</div>
+              <div className="table-cell">
+                <span className="status-badge paid">{transaction.status}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Upcoming Transactions */}
+      <div className="transactions-section">
+        <h3 className="subsection-title">Upcoming Transactions</h3>
+        <div className="transactions-table">
+          <div className="table-header">
+            <div className="header-cell">Date</div>
+            <div className="header-cell">Description</div>
+            <div className="header-cell">Amount</div>
+            <div className="header-cell">Status</div>
+          </div>
+          {upcomingTransactions.map((transaction) => (
+            <div key={transaction.id} className="table-row">
+              <div className="table-cell">{transaction.date}</div>
+              <div className="table-cell">{transaction.description}</div>
+              <div className="table-cell">${transaction.amount.toLocaleString()}</div>
+              <div className="table-cell">
+                <span className="status-badge scheduled">{transaction.status}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Payment Summary */}
+      <div className="payment-summary">
+        <h3 className="subsection-title">Payment Summary</h3>
+        <div className="summary-grid">
+          <div className="summary-card">
+            <div className="summary-title">This Month</div>
+            <div className="summary-amount">$4,850</div>
+            <div className="summary-description">Total charges</div>
+          </div>
+          <div className="summary-card">
+            <div className="summary-title">Next Month</div>
+            <div className="summary-amount">$5,000</div>
+            <div className="summary-description">Estimated charges</div>
+          </div>
+          <div className="summary-card">
+            <div className="summary-title">Year to Date</div>
+            <div className="summary-amount">$24,250</div>
+            <div className="summary-description">Total paid</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="family-dashboard">
+      <div className="dashboard-container">
+        <header className="dashboard-header">
+          <div className="header-content">
+            <div className="header-main">
+              <h1 className="header-title">Family Member Dashboard</h1>
+              <p className="header-subtitle">Care updates and billing information for {patientInfo.name}</p>
+            </div>
+            <div className="header-status">
+              <div className="status-indicator">
+                <div className="status-dot active"></div>
+                <div className="status-text">
+                  <div className="status-label">Care Status</div>
+                  <div className="status-value">Active Care</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        
+        <div className="navigation-tabs">
+          <div className="tabs-container">
+            <button 
+              className={`nav-tab ${activeTab === 'medical-overview' ? 'active' : ''}`}
+              onClick={() => setActiveTab('medical-overview')}
+            >
+              Medical Overview
             </button>
-            <button className="secondary-button">
-              Billing History
+            <button 
+              className={`nav-tab ${activeTab === 'payment-details' ? 'active' : ''}`}
+              onClick={() => setActiveTab('payment-details')}
+            >
+              Payment Details
             </button>
           </div>
         </div>
-      )}
-
-      {activeTab === 'previous' && (
-        <div className="card">
-          <div className="card-header">
-            <h2 className="card-title">
-              <Check size={20} />
-              <span>Transaction History</span>
-            </h2>
-          </div>
-          <div className="table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Transaction ID</th>
-                  <th>Date</th>
-                  <th>Description</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {transactions.map((transaction) => (
-                  <tr key={transaction.id}>
-                    <td>{transaction.id}</td>
-                    <td>{transaction.date}</td>
-                    <td>{transaction.description}</td>
-                    <td>{transaction.amount}</td>
-                    <td>
-                      <StatusIndicator status={transaction.status} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {activeTab === 'upcoming' && (
-        <div className="card">
-          <div className="card-header">
-            <h2 className="card-title">
-              <Clock size={20} />
-              <span>Upcoming Payments</span>
-            </h2>
-          </div>
-          <div className="table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Transaction ID</th>
-                  <th>Date</th>
-                  <th>Description</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {upcomingTransactions.map((transaction) => (
-                  <tr key={transaction.id}>
-                    <td>{transaction.id}</td>
-                    <td>{transaction.date}</td>
-                    <td>{transaction.description}</td>
-                    <td>{transaction.amount}</td>
-                    <td>
-                      <StatusIndicator status={transaction.status} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="alert-box">
-            <AlertCircle size={18} />
-            <p>Automatic payments will be processed on the scheduled dates using your default payment method.</p>
-          </div>
-        </div>
-      )}
-    </section>
-  );
-};
-
-// Patient Profile Page
-const PatientProfile = () => {
-  return (
-    <div className="profile-page">
-      <h1 className="page-title">Patient Profile</h1>
-      
-      <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">
-            <User size={20} />
-            <span>Personal Information</span>
-          </h2>
-        </div>
         
-        <div className="profile-details">
-          <div className="profile-avatar">
-            <div className="avatar-placeholder">NH</div>
-          </div>
-          
-          <div className="profile-info">
-            <div className="info-group">
-              <h3 className="info-label">Name</h3>
-              <p className="info-value">namehere</p>
-            </div>
-            
-            <div className="info-group">
-              <h3 className="info-label">Date of Birth</h3>
-              <p className="info-value">January 15, 1985</p>
-            </div>
-            
-            <div className="info-group">
-              <h3 className="info-label">Contact Number</h3>
-              <p className="info-value">(555) 123-4567</p>
-            </div>
-            
-            <div className="info-group">
-              <h3 className="info-label">Email Address</h3>
-              <p className="info-value">namehere@example.com</p>
-            </div>
-            
-            <div className="info-group">
-              <h3 className="info-label">Emergency Contact</h3>
-              <p className="info-value">namehere (Spouse) - (555) 987-6543</p>
-            </div>
-          </div>
-        </div>
-        
-        <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem' }}>
-          <button className="primary-button">
-            Edit Profile
-          </button>
-          <button className="secondary-button">
-            Change Password
-          </button>
-        </div>
-      </div>
-      
-      <div className="card" style={{ marginTop: '2rem' }}>
-        <div className="card-header">
-          <h2 className="card-title">
-            <Activity size={20} />
-            <span>Health Information</span>
-          </h2>
-        </div>
-        
-        <div className="health-details">
-          <div className="info-group">
-            <h3 className="info-label">Blood Type</h3>
-            <p className="info-value">A+</p>
-          </div>
-          
-          <div className="info-group">
-            <h3 className="info-label">Height</h3>
-            <p className="info-value">5'10" (178 cm)</p>
-          </div>
-          
-          <div className="info-group">
-            <h3 className="info-label">Weight</h3>
-            <p className="info-value">168 lbs (76 kg)</p>
-          </div>
-          
-          <div className="info-group">
-            <h3 className="info-label">Allergies</h3>
-            <p className="info-value">Penicillin, Peanuts</p>
-          </div>
-        </div>
+        {activeTab === 'medical-overview' && renderMedicalOverview()}
+        {activeTab === 'payment-details' && renderPaymentDetails()}
       </div>
     </div>
   );
 };
 
-// Medical Records Page
-const MedicalRecords = () => {
-  const [activeTab, setActiveTab] = useState('visits');
-  
-  const medicalVisits = [
-    {
-      id: "VS123456",
-      date: "April 15, 2025",
-      doctor: "namehere",
-      specialty: "Family Medicine",
-      reason: "Annual Physical",
-      notes: "Patient is in good health. Follow-up in 12 months."
-    },
-    {
-      id: "VS123455",
-      date: "March 3, 2025",
-      doctor: "namehere",
-      specialty: "Dermatology",
-      reason: "Skin Rash",
-      notes: "Prescribed topical cream. Rash should clear up in 7-10 days."
-    },
-    {
-      id: "VS123454",
-      date: "January 22, 2025",
-      doctor: "namehere",
-      specialty: "Orthopedics",
-      reason: "Knee Pain",
-      notes: "MRI scheduled. Physical therapy recommended twice weekly."
-    }
-  ];
-  
-  const prescriptions = [
-    {
-      id: "PR123456",
-      medication: "Lisinopril",
-      dosage: "10mg",
-      frequency: "Once daily",
-      prescribed: "April 15, 2025",
-      refills: "3 remaining",
-      doctor: "namehere"
-    },
-    {
-      id: "PR123455",
-      medication: "Atorvastatin",
-      dosage: "20mg",
-      frequency: "Once daily at bedtime",
-      prescribed: "April 15, 2025",
-      refills: "3 remaining",
-      doctor: "namehere"
-    },
-    {
-      id: "PR123454",
-      medication: "Triamcinolone Cream",
-      dosage: "0.1%",
-      frequency: "Apply to affected area twice daily",
-      prescribed: "March 3, 2025",
-      refills: "0 remaining",
-      doctor: "namehere"
-    }
-  ];
-  
-  const testResults = [
-    {
-      id: "TR123456",
-      test: "Complete Blood Count",
-      date: "April 15, 2025",
-      status: "completed",
-      result: "Normal",
-      notes: "All values within normal range."
-    },
-    {
-      id: "TR123455",
-      test: "Lipid Panel",
-      date: "April 15, 2025",
-      status: "completed",
-      result: "Abnormal",
-      notes: "LDL slightly elevated. Dietary changes recommended."
-    },
-    {
-      id: "TR123454",
-      test: "MRI - Right Knee",
-      date: "January 24, 2025",
-      status: "completed",
-      result: "Abnormal",
-      notes: "Minor meniscus tear. Physical therapy recommended."
-    }
-  ];
-  
-  return (
-    <div className="records-page">
-      <h1 className="page-title">Medical Records</h1>
-      
-      <div className="tab-group">
-        <div 
-          className={`tab ${activeTab === 'visits' ? 'active' : ''}`}
-          onClick={() => setActiveTab('visits')}
-        >
-          Doctor Visits
-        </div>
-        <div 
-          className={`tab ${activeTab === 'prescriptions' ? 'active' : ''}`}
-          onClick={() => setActiveTab('prescriptions')}
-        >
-          Prescriptions
-        </div>
-        <div 
-          className={`tab ${activeTab === 'tests' ? 'active' : ''}`}
-          onClick={() => setActiveTab('tests')}
-        >
-          Test Results
-        </div>
-      </div>
-      
-      {activeTab === 'visits' && (
-        <div className="card">
-          <div className="card-header">
-            <h2 className="card-title">
-              <Calendar size={20} />
-              <span>Recent Doctor Visits</span>
-            </h2>
-          </div>
-          <div className="table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Doctor</th>
-                  <th>Specialty</th>
-                  <th>Reason</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {medicalVisits.map((visit) => (
-                  <tr key={visit.id}>
-                    <td>{visit.date}</td>
-                    <td>{visit.doctor}</td>
-                    <td>{visit.specialty}</td>
-                    <td>{visit.reason}</td>
-                    <td>{visit.notes}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-            <button className="secondary-button">View All Visits</button>
-          </div>
-        </div>
-      )}
-      
-      {activeTab === 'prescriptions' && (
-        <div className="card">
-          <div className="card-header">
-            <h2 className="card-title">
-              <Clock size={20} />
-              <span>Current Prescriptions</span>
-            </h2>
-          </div>
-          <div className="table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Medication</th>
-                  <th>Dosage</th>
-                  <th>Frequency</th>
-                  <th>Prescribed</th>
-                  <th>Refills</th>
-                  <th>Doctor</th>
-                </tr>
-              </thead>
-              <tbody>
-                {prescriptions.map((prescription) => (
-                  <tr key={prescription.id}>
-                    <td>{prescription.medication}</td>
-                    <td>{prescription.dosage}</td>
-                    <td>{prescription.frequency}</td>
-                    <td>{prescription.prescribed}</td>
-                    <td>{prescription.refills}</td>
-                    <td>{prescription.doctor}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-            <button className="secondary-button">Request Refill</button>
-          </div>
-        </div>
-      )}
-      
-      {activeTab === 'tests' && (
-        <div className="card">
-          <div className="card-header">
-            <h2 className="card-title">
-              <Activity size={20} />
-              <span>Test Results</span>
-            </h2>
-          </div>
-          <div className="table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Test</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Result</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {testResults.map((test) => (
-                  <tr key={test.id}>
-                    <td>{test.test}</td>
-                    <td>{test.date}</td>
-                    <td>
-                      <StatusIndicator status={test.status} />
-                    </td>
-                    <td>{test.result}</td>
-                    <td>{test.notes}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-            <button className="secondary-button">Download Results</button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// Payments Page
-const PaymentsPage = () => {
-  return (
-    <div className="payments-page">
-      <h1 className="page-title">Payments</h1>
-      
-      <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">
-            <CreditCard size={20} />
-            <span>Payment Methods</span>
-          </h2>
-        </div>
-        
-        <div className="payment-methods">
-          <div className="payment-method-card">
-            <div className="payment-method-header">
-              <div className="payment-method-type">VISA</div>
-              <div className="payment-method-default-badge">Default</div>
-            </div>
-            <div className="payment-method-number">**** **** **** 4242</div>
-            <div className="payment-method-details">
-              <div>namehere</div>
-              <div>Expires 09/2026</div>
-            </div>
-          </div>
-          
-          <div className="payment-method-card add-new">
-            <div className="add-payment-method">
-              <div className="add-icon">+</div>
-              <div>Add New Payment Method</div>
-            </div>
-          </div>
-        </div>
-        
-        <div style={{ marginTop: '2rem' }}>
-          <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '1rem' }}>Recent Payments</h3>
-          <div className="table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Description</th>
-                  <th>Amount</th>
-                  <th>Payment Method</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>May 1, 2025</td>
-                  <td>Monthly subscription</td>
-                  <td>$299.99</td>
-                  <td>VISA ending in 4242</td>
-                  <td><StatusIndicator status="completed" /></td>
-                </tr>
-                <tr>
-                  <td>April 15, 2025</td>
-                  <td>Specialist consultation</td>
-                  <td>$75.00</td>
-                  <td>VISA ending in 4242</td>
-                  <td><StatusIndicator status="completed" /></td>
-                </tr>
-                <tr>
-                  <td>April 1, 2025</td>
-                  <td>Monthly subscription</td>
-                  <td>$299.99</td>
-                  <td>VISA ending in 4242</td>
-                  <td><StatusIndicator status="completed" /></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Settings Page
-const SettingsPage = () => {
-  return (
-    <div className="settings-page">
-      <h1 className="page-title">Settings</h1>
-      
-      <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">
-            <Settings size={20} />
-            <span>Account Settings</span>
-          </h2>
-        </div>
-        
-        <div className="settings-group">
-          <h3 className="settings-group-title">Personal Information</h3>
-          <div className="settings-item">
-            <div className="settings-item-label">Name</div>
-            <div className="settings-item-value">namehere</div>
-            <button className="secondary-button settings-button">Edit</button>
-          </div>
-          <div className="settings-item">
-            <div className="settings-item-label">Email</div>
-            <div className="settings-item-value">namehere@example.com</div>
-            <button className="secondary-button settings-button">Edit</button>
-          </div>
-          <div className="settings-item">
-            <div className="settings-item-label">Phone</div>
-            <div className="settings-item-value">(555) 123-4567</div>
-            <button className="secondary-button settings-button">Edit</button>
-          </div>
-          <div className="settings-item">
-            <div className="settings-item-label">Password</div>
-            <div className="settings-item-value">••••••••••••</div>
-            <button className="secondary-button settings-button">Change</button>
-          </div>
-        </div>
-        
-        <div className="settings-group">
-          <h3 className="settings-group-title">Notifications</h3>
-          <div className="settings-item">
-            <div className="settings-item-label">Email Notifications</div>
-            <div className="settings-item-value">Enabled</div>
-            <div className="toggle-switch enabled"></div>
-          </div>
-          <div className="settings-item">
-            <div className="settings-item-label">SMS Notifications</div>
-            <div className="settings-item-value">Disabled</div>
-            <div className="toggle-switch"></div>
-          </div>
-          <div className="settings-item">
-            <div className="settings-item-label">Appointment Reminders</div>
-            <div className="settings-item-value">24 hours before</div>
-            <button className="secondary-button settings-button">Edit</button>
-          </div>
-        </div>
-        
-        <div className="settings-group">
-          <h3 className="settings-group-title">Privacy</h3>
-          <div className="settings-item">
-            <div className="settings-item-label">Two-Factor Authentication</div>
-            <div className="settings-item-value">Disabled</div>
-            <button className="secondary-button settings-button">Enable</button>
-          </div>
-          <div className="settings-item">
-            <div className="settings-item-label">Data Sharing</div>
-            <div className="settings-item-value">Minimal</div>
-            <button className="secondary-button settings-button">Edit</button>
-          </div>
-        </div>
-        
-        <div style={{ marginTop: '2rem', display: 'flex', gap: '0.75rem' }}>
-          <button className="primary-button">
-            Save Changes
-          </button>
-          <button className="secondary-button">
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default FamilyMember;
+export default FamilyDashboard;
