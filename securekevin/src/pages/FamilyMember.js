@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/family.css';
+import '../styles/family-dashboard.css';
 
 const FamilyDashboard = () => {
   const [activeTab, setActiveTab] = useState('medical-overview');
@@ -146,31 +146,8 @@ const FamilyDashboard = () => {
         </div>
 
         <div className="overview-grid">
-          {/* Vital Signs */}
-          <div className="overview-card">
-            <h4 className="card-title">Current Vital Signs</h4>
-            <div className="vitals-grid">
-              <div className="vital-item">
-                <span className="vital-label">Blood Pressure</span>
-                <span className="vital-value">{currentWeekOverview.vitalSigns.bloodPressure}</span>
-              </div>
-              <div className="vital-item">
-                <span className="vital-label">Heart Rate</span>
-                <span className="vital-value">{currentWeekOverview.vitalSigns.heartRate}</span>
-              </div>
-              <div className="vital-item">
-                <span className="vital-label">Temperature</span>
-                <span className="vital-value">{currentWeekOverview.vitalSigns.temperature}</span>
-              </div>
-              <div className="vital-item">
-                <span className="vital-label">Oxygen Saturation</span>
-                <span className="vital-value">{currentWeekOverview.vitalSigns.oxygenSaturation}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Current Medications */}
-          <div className="overview-card">
+          {/* Current Medications - Removed the Vital Signs section and expanded this to take full width */}
+          <div className="overview-card full-width">
             <h4 className="card-title">Current Medications</h4>
             <div className="medications-list">
               {currentWeekOverview.medications.map((med, index) => (
