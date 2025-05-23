@@ -1,14 +1,20 @@
-// src/pages/DoctorsDashboard.js
 import React, { useState } from 'react';
 import { Grid, Container, Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import TimetableDoctor from '../components/TimetableDoctor';
 import EventsListDoctor from '../components/EventsListDoctor';
-import CustomCalendar from '../components/CustomCalendar';
+import CustomCalendar from '../components/CustomCalendar'; // Ensure this path is correct
 import Sidebar from '../components/Sidebar';
 
 function DoctorsDashboard() {
   const [openDialog, setOpenDialog] = useState(false);
+  
+  // Appointments state
+  const [appointments, setAppointments] = useState([
+    { id: 1, time: '09:00', description: 'Morning Checkup', patient: 'John Doe', doctor: 'Dr. Smith', location: 'Room 101', date: '2023-10-10' },
+    { id: 2, time: '11:30', description: 'Physical Therapy', patient: 'Jane Smith', doctor: 'Dr. Jones', location: 'Therapy Wing', date: '2023-10-11' },
+    { id: 3, time: '14:00', description: 'Medication Review', patient: 'Robert Brown', doctor: 'Dr. Wilson', location: 'Room 205', date: '2023-10-10' }
+  ]);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -29,10 +35,10 @@ function DoctorsDashboard() {
           </header>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={8}>
-              <TimetableDoctor userType="doctor" />
+              <TimetableDoctor userType="doctor" appointments={appointments} setAppointments={setAppointments} />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
-              <CustomCalendar />
+              <CustomCalendar appointments={appointments} />
             </Grid>
             <Grid item xs={12} md={6} lg={8}>
               <EventsListDoctor userType="doctor" />
