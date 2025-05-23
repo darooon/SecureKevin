@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Drawer, List, ListItem, ListItemText, ListSubheader, Divider, Box, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 
 const menuItems = [
-  { text: 'Medical records', content: 'Here you can view and manage medical records.' },
-  { text: 'Patient Profiles', content: 'Access detailed profiles of patients, including history and treatment plans.' },
-  { text: 'Medication', content: 'Manage and review medication prescriptions for patients.' },
-  { text: 'Prescriptions', content: 'View and create new prescriptions for patients.' },
-  { text: 'Referrals', content: 'Manage patient referrals to specialists and other services.' },
-  { text: 'Critical patients', content: 'List of patients requiring immediate attention and care.' },
+  { text: 'Medical records', content: 'Medical records add more detail later link to nurse dashboard' },
+  { text: 'Patient Profiles', content: 'Patient profile add detail later' },
+  { text: 'Medication', content: 'add information for medication here from nurse dashboard' },
+  { text: 'Prescriptions', content: 'add information for prescriptions here from nurse dashboard' },
+  { text: 'Referrals', content: 'exemplary information' },
+  { text: 'Critical patients', content: 'include a list for patients here' },
 ];
 
 const Sidebar = () => {
